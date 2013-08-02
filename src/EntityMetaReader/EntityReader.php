@@ -37,8 +37,6 @@ class EntityReader extends \Nette\Object
 		$reflection = new \ReflectionClass($entity);
 		$properties = $reflection->getProperties();
 
-		// TODO: Inherited class!!!
-
 		$columns = array();
 		foreach ($properties as $property) {
 			$annotations = $this->reader->getPropertyAnnotations($property);
