@@ -150,10 +150,33 @@ class ColumnReader extends \Nette\Object implements \Iterator
 	{
 		foreach ($this->getAnnotations() as $annotation) {
 			if ($annotation instanceof \Doctrine\ORM\Mapping\OneToOne ||
-				$annotation instanceof \Doctrine\ORM\Mapping\ManyToOne)
+				$annotation instanceof \Doctrine\ORM\Mapping\ManyToOne ||
+				$annotation instanceof \Doctrine\ORM\Mapping\OneToMany ||
+				$annotation instanceof \Doctrine\ORM\Mapping\ManyToMany)
 				return $annotation->targetEntity;
 		}
 		return NULL;
+	}
+
+
+	/**
+	 * Is nullable
+	 * @return bool
+	 */
+	public function isNullable()
+	{
+		if ($this->isValueType()) {
+			$annotation = $this->getAnnotation('Doctrine\ORM\Mapping\Column');
+			return $annotation->nullable;
+
+		}
+
+		$annotation = $this->getAnnotation('Doctrine\ORM\Mapping\JoinColumn');
+		if ($annotation) {
+			return $annotation->nullable;
+		}
+
+		return TRUE;
 	}
 
 
