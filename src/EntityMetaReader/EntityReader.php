@@ -37,12 +37,15 @@ class EntityReader extends \Nette\Object
 		$reflection = new \ReflectionClass($entity);
 		$properties = $reflection->getProperties();
 
+		$values = $reflection->getDefaultProperties();
+
 		$columns = array();
 		foreach ($properties as $property) {
 			$annotations = $this->reader->getPropertyAnnotations($property);
 			foreach ($annotations as $annotation) {
 				if ($annotation instanceof \Doctrine\ORM\Mapping\Annotation) {
-					$columns[$property->getName()] = new ColumnReader($entity, $property->getName(), $annotations);
+					$columns[$property->getName()] = new ColumnReader($entity, $property->getName(),
+														$annotations, $values[$property->getName()]);
 					break;
 				}
 			}

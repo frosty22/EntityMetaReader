@@ -25,6 +25,12 @@ class ColumnReader extends \Nette\Object implements \Iterator
 
 
 	/**
+	 * @var string
+	 */
+	private $default;
+
+
+	/**
 	 * List of annotations objects
 	 * @var array
 	 */
@@ -42,12 +48,14 @@ class ColumnReader extends \Nette\Object implements \Iterator
 	 * @param string $entity
 	 * @param string $name
 	 * @param array $annotations
+	 * @param mixed $default
 	 */
-	public function __construct($entity, $name, array $annotations)
+	public function __construct($entity, $name, array $annotations, $default = NULL)
 	{
 		$this->entity = $entity;
 		$this->name = $name;
 		$this->annotations = $annotations;
+		$this->default = $default;
 	}
 
 
@@ -75,6 +83,15 @@ class ColumnReader extends \Nette\Object implements \Iterator
 	public function getAnnotations()
 	{
 		return $this->annotations;
+	}
+
+
+	/**
+	 * @return mixed
+	 */
+	public function getDefault()
+	{
+		return $this->default;
 	}
 
 
