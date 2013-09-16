@@ -22,6 +22,12 @@ class EntityReader extends \Nette\Object
 
 
 	/**
+	 * @var array
+	 */
+	private $readed = array();
+
+
+	/**
 	 * @param \Doctrine\Common\Annotations\Reader $reader
 	 */
 	public function __construct(\Doctrine\Common\Annotations\Reader $reader)
@@ -40,6 +46,9 @@ class EntityReader extends \Nette\Object
 	{
 		if (!is_string($entity))
 			throw new InvalidArgumentException('Entity must be name of class.');
+
+		if (isset($this->readed[$entity]))
+			return $this->readed[$entity];
 
 		$reflection = new \ReflectionClass($entity);
 		$properties = $reflection->getProperties();
@@ -62,6 +71,7 @@ class EntityReader extends \Nette\Object
 			}
 		}
 
+		$this->readed[$entity] = $columns;
 		return $columns;
 	}
 
