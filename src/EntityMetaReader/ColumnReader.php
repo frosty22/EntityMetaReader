@@ -96,6 +96,18 @@ class ColumnReader extends \Nette\Object implements \Iterator
 
 
 	/**
+	 * Check if is need assing property
+	 * @return bool
+	 */
+	public function isNeedAssign()
+	{
+		return $this->getAnnotation('Doctrine\ORM\Mapping\GeneratedValue') === NULL &&
+		$this->isNullable() === FALSE &&
+		$this->getDefault() === NULL;
+	}
+
+
+	/**
 	 * Get annotation
 	 * @param string $type Class type of annotation
 	 * @param boolean $required If is required, will be created new instance when not find
