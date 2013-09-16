@@ -2,6 +2,9 @@
 
 namespace EntityMetaReader;
 
+use Ale\Entities\BaseEntity;
+use Ale\InvalidArgumentException;
+
 /**
  * Entity meta-data annotations reader
  *
@@ -31,13 +34,21 @@ class EntityReader extends \Nette\Object
 	 * Get list of entity columns and annotations
 	 * @param string $entity
 	 * @return ColumnReader[]
+	 * @throws InvalidArgumentException
 	 */
 	public function getEntityColumns($entity)
 	{
+		if (!is_string($entity))
+			throw new InvalidArgumentException('Entity must be name of class.');
+
 		$reflection = new \ReflectionClass($entity);
 		$properties = $reflection->getProperties();
 
-		$values = $reflection->getDefaultProperties();
+		$obj = new $entity;
+		if (!$obj instanceof BaseEntity)
+			throw new InvalidArgumentException('Supported are only parents of BaseEntity.');
+
+		$values = $obj->getListProperties();
 
 		$columns = array();
 		foreach ($properties as $property) {
