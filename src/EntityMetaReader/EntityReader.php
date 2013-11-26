@@ -53,11 +53,7 @@ class EntityReader extends \Nette\Object
 		$reflection = new \ReflectionClass($entity);
 		$properties = $reflection->getProperties();
 
-		$obj = new $entity;
-		if (!$obj instanceof BaseEntity)
-			throw new InvalidArgumentException('Supported are only parents of BaseEntity.');
-
-		$values = $obj->getListProperties();
+		$values = $reflection->getDefaultProperties();
 
 		$columns = array();
 		foreach ($properties as $property) {
